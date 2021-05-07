@@ -1,23 +1,35 @@
-import './App.less';
 import React from 'react'
+import './App.less';
 import { Layout } from 'antd';
-import { Content, Footer } from 'antd/lib/layout/layout';
+import Header from './component/Header'
+import DrawerMenu from './component/DrawerMenu'
+const { Content, Footer } = Layout
 
-function App() {
-  return (
-    <Layout className="App">
-      左侧导航菜单
-      <Layout>
-        Header
-        <Content className='App-content'>
-          Hello
-        </Content>
-        <Footer className='App-footer'>
-          <a href="https://github.com/">React Demo</a>
-        </Footer>
+class App extends React.Component {
+
+  state = {
+    title: '首页',
+    collapsed: false
+  }
+
+  render() {
+    const { collapsed, title } = this.state
+    return (
+      <Layout className="App">
+        <DrawerMenu collapsed={collapsed} />
+        <Layout>
+          <Header title={title} toggle={(collapsed) => {
+            this.setState({ collapsed })
+          }} />
+          <Content className='App-content'>
+          </Content>
+          <Footer className='App-footer'>
+            <a href="https://github.com/">React Demo</a>
+          </Footer>
+        </Layout>
       </Layout>
-    </Layout>
-  );
+    );
+  }
 }
 
 export default App;
