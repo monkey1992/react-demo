@@ -1,9 +1,10 @@
 import React from 'react'
 import './DrawerMenu.less';
-import { Layout } from 'antd';
+import { Layout, Menu } from 'antd';
+import { HomeOutlined, ProjectOutlined, AppstoreAddOutlined, PicCenterOutlined, TeamOutlined, ShopOutlined, FileAddFilled } from '@ant-design/icons'
 
 const { Sider } = Layout
-const { SubMenu } = Layout
+const { SubMenu } = Menu
 
 const MENUS = {
     home: {
@@ -20,7 +21,7 @@ const MENUS = {
     },
     addCategory: {
         key: 'addCategory',
-        value: '添加商品类别'
+        title: '添加商品类别'
     },
     configList: {
         key: 'configList',
@@ -33,8 +34,34 @@ const MENUS = {
 };
 
 class Index extends React.Component {
+    state = {
+        selectedKeys: ["home"]
+    }
     onCollapse = collapsed => {
         this.setState(collapsed)
+    }
+    onSelect = selectedKeys => {
+        this.setState({
+            selectedKeys: [selectedKeys.key]
+        })
+    }
+    menu() {
+        return <Menu theme='dark' defaultSelectedKeys={this.state.selectedKeys} mode='inline' onSelect={this.onSelect}>
+            <Menu.Item key={MENUS.home.key} icon={<HomeOutlined />}>
+                {MENUS.home.title}
+            </Menu.Item>
+            <SubMenu key='category' title='类别管理' icon={<ProjectOutlined />}>
+                <Menu.Item key={MENUS.category.key} icon={<AppstoreAddOutlined />}>{MENUS.category.title}</Menu.Item>
+                <Menu.Item key={MENUS.addCategory.key} icon={<PicCenterOutlined />}>{MENUS.addCategory.title}</Menu.Item>
+            </SubMenu>
+            <Menu.Item key={MENUS.user.key} icon={<TeamOutlined />}>
+                {MENUS.user.title}
+            </Menu.Item>
+            <SubMenu key='configCenter' title='配置中心' icon={<ProjectOutlined />}>
+                <Menu.Item key={MENUS.configList.key} icon={<ShopOutlined />}>{MENUS.configList.title}</Menu.Item>
+                <Menu.Item key={MENUS.configAdd.key} icon={<FileAddFilled />}>{MENUS.configAdd.title}</Menu.Item>
+            </SubMenu>
+        </ Menu>
     }
     render() {
         const { collapsed } = this.props;
@@ -48,6 +75,7 @@ class Index extends React.Component {
                     <img className='drawer-logo' alt='logo' src='https://www.devio.org/img/avatar.png' />
                     {headerTitle}
                 </div>
+                {this.menu()}
             </Sider>
         )
     }
