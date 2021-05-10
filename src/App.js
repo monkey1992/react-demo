@@ -3,6 +3,7 @@ import './App.less';
 import { Layout } from 'antd';
 import Header from './component/Header'
 import DrawerMenu from './component/DrawerMenu'
+import { Switch, Route } from 'react-router-dom'
 const { Content, Footer } = Layout
 
 class App extends React.Component {
@@ -22,6 +23,9 @@ class App extends React.Component {
             this.setState({ collapsed })
           }} />
           <Content className='App-content'>
+            <switch>
+              
+            </switch>
           </Content>
           <Footer className='App-footer'>
             <a href="https://github.com/">React Demo</a>
