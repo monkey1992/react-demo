@@ -28,6 +28,9 @@ export default class Index extends React.Component {
                 <div onClick={this.toggle}>
                     {collapsed ? <MenuFoldOutlined className='header-toggle' /> : <MenuUnfoldOutlined className='header-toggle' />}
                 </div>
+                <div className='header-title'>
+                    <h1>{title}</h1>
+                </div>
             </Header>
         )
     }

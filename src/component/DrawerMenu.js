@@ -2,6 +2,7 @@ import React from 'react'
 import './DrawerMenu.less';
 import { Layout, Menu } from 'antd';
 import { HomeOutlined, ProjectOutlined, AppstoreAddOutlined, PicCenterOutlined, TeamOutlined, ShopOutlined, FileAddFilled } from '@ant-design/icons'
+import { withRouter } from 'react-router-dom'
 
 const { Sider } = Layout
 const { SubMenu } = Menu
@@ -43,8 +44,37 @@ class Index extends React.Component {
     onSelect = selectedKeys => {
         this.setState({
             selectedKeys: [selectedKeys.key]
-        })
-    }
+        });
+        let pathName;
+        switch (selectedKeys.key) {
+            case 'home':
+                pathName = '/';
+                break;
+            case 'category':
+                pathName = '/category';
+                break;
+            case 'addCategory':
+                pathName = '/category-add';
+                break;
+            case 'user':
+                pathName = '/user';
+                break;
+            case 'configList':
+                pathName = '/config';
+                break;
+            case 'configAdd':
+                pathName = '/config-Add';
+                break;
+            default:
+                break;
+        };
+        const { history, onMenuSelect } = this.props;
+        const menu = MENUS[selectedKeys.key];
+        if (pathName) {
+            history.push(pathName);
+            onMenuSelect && onMenuSelect(pathName, menu.title);
+        };
+    };
     menu() {
         return <Menu theme='dark' defaultSelectedKeys={this.state.selectedKeys} mode='inline' onSelect={this.onSelect}>
             <Menu.Item key={MENUS.home.key} icon={<HomeOutlined />}>
@@ -81,4 +111,6 @@ class Index extends React.Component {
     }
 }
 
-export default Index;
+// WithRouter是react-router的一个高阶组件，获取history
+// render时会把match、location和history传入props
+export default withRouter(Index);
