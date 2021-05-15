@@ -33,12 +33,12 @@ class App extends React.Component {
           }} />
           <Content className='App-content'>
             <Switch>
-              <Route exact path='/' Component={Home} />
-              <Route path='/category' Component={Category} />
-              <Route path='/category-add' Component={AddCategory} />
-              <Route path='/user' Component={User} />
-              <Route path='/config' Component={ConfigList} />
-              <Route path='/config-add' Component={ConfigAdd} />
+              <Route exact path='/' component={Home} />
+              <Route path='/category' component={Category} />
+              <Route path='/category-add' component={AddCategory} />
+              <Route path='/user' component={User} />
+              <Route path='/config' component={ConfigList} />
+              <Route path='/config-add' component={ConfigAdd} />
             </Switch>
           </Content>
           <Footer className='App-footer'>
