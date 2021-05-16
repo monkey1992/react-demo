@@ -1,5 +1,8 @@
-import { url } from './api'
-
+import { url } from "./api";
+import { userList } from "./user";
+export default {
+    userList
+}
 const AUTH_TOKEN = 'MTU5Mjq1MDg3NDcwNw=='
 
 export function get(api) {

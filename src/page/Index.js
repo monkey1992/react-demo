@@ -1,23 +1,32 @@
 import React from 'react'
 import './Index.less'
-import { get } from '../service/index'
-import { api } from '../service/api'
+import api from '../service'
 import { Button } from 'antd'
 
 class Index extends React.Component {
+    state = {
+        result: {}
+    }
     fire = () => {
-        get(api.userList)({ pageIndex: 1, pageSize: 10 })
+        api.userList({ pageIndex: 1, pageSize: 10 })
             .then(res => res.json())
             .then(result => {
                 console.log(result)
+                this.setState({
+                    result
+                })
             }).catch(e => {
                 console.log(e)
             })
     }
 
     render() {
+        const { result } = this.state
         return <div className='home'>
             <Button onClick={this.fire}>test API</Button>
+            <div>
+                Result:{JSON.stringify(result)}
+            </div>
         </div>
     }
 }
