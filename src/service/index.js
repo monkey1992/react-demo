@@ -1,7 +1,9 @@
 import { url } from "./api";
-import { userList } from "./user";
+import { userList, updateUser } from "./user";
+import { format } from "util";
 export default {
-    userList
+    userList,
+    updateUser
 }
 const AUTH_TOKEN = 'MTU5Mjq1MDg3NDcwNw=='
 
@@ -14,10 +16,32 @@ export function get(api) {
         })
 }
 
+export function put(api) {
+    return params => {
+        const formData = new FormData()
+        Object.entries(params).forEach(([k, v]) => {
+            formData.append(k, v)
+        })
+        return queryParams => fetch(buildParams(url + api, queryParams),
+            {
+                method: 'PUT',
+                body: formData,
+                headers: {
+                    'auth-token': AUTH_TOKEN
+                }
+            })
+    }
+}
+
 function buildParams(url, params = {}) {
-    let newUrl = new URL(url);
-    Object.keys(params).forEach(key => {
-        newUrl.searchParams.append(key, params[key]);
-    });
-    return newUrl.toString();
+    let newUrl = new URL(url)
+    if (typeof params === 'object') {
+        Object.keys(params).forEach(key => {
+            newUrl.searchParams.append(key, params[key]);
+        });
+        return newUrl.toString();
+    } else {
+        // 适配path参数
+        return url.endsWith('/') ? url + params : (url + '/' + params)
+    }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import './Index.less'
-import { Table } from 'antd'
+import { Table, Switch, Popconfirm } from 'antd'
 import api from '../../service';
 
 const PAGE_SIZE = 10
@@ -33,7 +33,17 @@ export default class Index extends React.Component {
             },
             {
                 title: '是否禁用',
-                dataIndex: 'forbid'
+                dataIndex: 'forbid',
+                render: (text, record, index) => {
+                    return <Popconfirm title={`确定要${record.forbid === '1' ? '解禁' : '冻结'}`}
+                        onConfirm={() => this.toggleForbid(record)}>
+                        <Switch
+                            checkedChildren='正常'
+                            unCheckedChildren='冻结'
+                            checked={text !== '1'} />
+                    </Popconfirm>
+                },
+                width: '20%'
             }
         ];
     }
@@ -49,7 +59,7 @@ export default class Index extends React.Component {
                     pageSize: PAGE_SIZE,
                     onChange: (page, pageSize) => {
                         console.log(page, pageSize)
-                        this.onCollapse(page)
+                        this.loadData(page)
                     }
                 }}
                 loading={loading}
@@ -80,6 +90,17 @@ export default class Index extends React.Component {
             }).catch(e => {
                 console.log(e)
                 this.setState({ loading: false })
+            })
+    }
+
+    toggleForbid = (record) => {
+        const forbid = record.forbid === '1' ? 0 : 1
+        api.updateUser({ forbid })(record.uid)
+            .then(res => res.json)
+            .then(result => {
+                this.loadData(this.pageIndex)
+            }).catch(e => {
+                console.log(e)
             })
     }
 }
