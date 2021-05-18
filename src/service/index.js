@@ -1,9 +1,11 @@
 import { url } from "./api";
 import { userList, updateUser } from "./user";
+import { categories } from "./category";
 import { format } from "util";
 export default {
     userList,
-    updateUser
+    updateUser,
+    categories
 }
 const AUTH_TOKEN = 'MTU5Mjq1MDg3NDcwNw=='
 

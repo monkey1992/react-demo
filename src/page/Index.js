@@ -8,7 +8,7 @@ class Index extends React.Component {
         result: {}
     }
     fire = () => {
-        api.userList({ pageIndex: 1, pageSize: 10 })
+        api.categories({ pageIndex: 1, pageSize: 10 })
             .then(res => res.json())
             .then(result => {
                 console.log(result)
