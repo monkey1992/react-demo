@@ -1,11 +1,12 @@
 import { url } from "./api";
 import { userList, updateUser } from "./user";
-import { categories } from "./category";
-import { format } from "util";
+import { categoryList, removeCategory } from "./category";
+
 export default {
     userList,
     updateUser,
-    categories
+    categoryList,
+    removeCategory
 }
 const AUTH_TOKEN = 'MTU5Mjq1MDg3NDcwNw=='
 
@@ -35,6 +36,15 @@ export function put(api) {
     }
 }
 
+export function del(api) {
+    return queryParams => fetch(buildParams(url + api, queryParams), {
+        method: 'DELETE',
+        headers: {
+            'auth-token': AUTH_TOKEN
+        }
+    })
+}
+
 function buildParams(url, params = {}) {
     let newUrl = new URL(url)
     if (typeof params === 'object') {
@@ -44,6 +54,6 @@ function buildParams(url, params = {}) {
         return newUrl.toString();
     } else {
         // 适配path参数
-        return url.endsWith('/') ? url + params : (url + '/' + params)
+        return url.endsWith('/') ? (url + params) : (url + '/' + params)
     }
 }

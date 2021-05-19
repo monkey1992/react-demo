@@ -1,3 +1,6 @@
 .category {
   background-color: chocolate;
 }
+.category-delete-text {
+  text-decoration: aqua;
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import './Index.less'
 import { Table, Popconfirm } from 'antd'
 import api from '../../service';
+import { domainToASCII } from 'url';
 
 const PAGE_SIZE = 10
 
@@ -29,11 +30,12 @@ export default class Index extends React.Component {
                 dataIndex: 'createTime'
             },
             {
-                title: '删除',
-                dataIndex: 'remove',
+                title: '操作',
+                dataIndex: 'operation',
                 render: (text, record, index) => {
-                    return <Popconfirm title={`确定要删除${record.title}吗？`}
+                    return <Popconfirm title={`确定要删除${record.categoryName}吗？`}
                         onConfirm={() => this.removeCategory(record)}>
+                        <a className='delete-text'>删除</a>
                     </Popconfirm>
                 },
                 width: '20%'
@@ -46,7 +48,7 @@ export default class Index extends React.Component {
         return (
             <Table
                 columns={this.columns}
-                rowKey={item => item.uid}
+                rowKey={item => item.categoryId}
                 pagination={{
                     total,
                     pageSize: PAGE_SIZE,
@@ -69,7 +71,7 @@ export default class Index extends React.Component {
     loadData = (pageIndex) => {
         this.pageIndex = pageIndex
         this.setState({ loading: false })
-        api.categories({ pageIndex: pageIndex, pageSize: PAGE_SIZE })
+        api.categoryList({ pageIndex: pageIndex, pageSize: PAGE_SIZE })
             .then(res => res.json())
             .then(result => {
                 console.log(result)
@@ -87,12 +89,12 @@ export default class Index extends React.Component {
     }
 
     removeCategory = (record) => {
-        // api.updateUser({ forbid })(record.uid)
-        //     .then(res => res.json)
-        //     .then(result => {
-        //         this.loadData(this.pageIndex)
-        //     }).catch(e => {
-        //         console.log(e)
-        //     })
+        api.removeCategory(record.categoryId)
+            .then(res => res.json)
+            .then(result => {
+                this.loadData(this.pageIndex)
+            }).catch(e => {
+                console.log(e)
+            })
     }
 }
