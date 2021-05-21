@@ -4,5 +4,6 @@ export const api = {
     userList: '/user/users',
     updateUser: '/user',
     categoryList: '/category/categories',
-    removeCategory: '/category'
+    removeCategory: '/category',
+    addCategory: '/category'
 }

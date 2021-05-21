@@ -1,12 +1,13 @@
 import { url } from "./api";
 import { userList, updateUser } from "./user";
-import { categoryList, removeCategory } from "./category";
+import { categoryList, removeCategory, addCategory } from "./category";
 
 export default {
     userList,
     updateUser,
     categoryList,
-    removeCategory
+    removeCategory,
+    addCategory
 }
 const AUTH_TOKEN = 'MTU5Mjq1MDg3NDcwNw=='
 
@@ -43,6 +44,20 @@ export function del(api) {
             'auth-token': AUTH_TOKEN
         }
     })
+}
+
+export function post(api) {
+    return params => {
+        return queryParams => fetch(buildParams(url + api, queryParams),
+            {
+                method: 'POST',
+                body: JSON.stringify(params),
+                headers: {
+                    'content-type': 'application/json',
+                    'auth-token': AUTH_TOKEN
+                }
+            })
+    }
 }
 
 function buildParams(url, params = {}) {

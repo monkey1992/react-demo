@@ -1,16 +1,51 @@
 import React from 'react'
 import './Index.less'
 import { Form, Input, Button } from 'antd';
+import api from '../../../service';
 
 export default class Index extends React.Component {
     formRef = React.createRef()
 
-    onFinish = (values) => {
-
+    onFinish = ({ categoryName }) => {
+        const nameArray = categoryName.replace(' ', '').split('|')
+        const promises = []
+        nameArray.forEach(element => {
+            promises.push(this.addCategory(element))
+        });
+        Promise.allSettled(promises)
+            .then(results => {
+                const successArray = []
+                const failureArray = []
+                results.forEach(result => {
+                    const { status, value, reason } = result
+                    if (status === 'fulfilled') {
+                        successArray.push(value.categoryName)
+                    } else {
+                        failureArray.push(reason)
+                    }
+                })
+            })
     }
 
     onRest = () => {
         this.formRef.current.resetFields()
+    }
+
+    addCategory = (categoryName) => {
+        return new Promise((resolve, reject) => {
+            api.addCategory()({ categoryName })
+                .then(res => res.json())
+                .then(result => {
+                    const { code, message } = result
+                    if (code === 0) {
+                        resolve({ categoryName, message })
+                    } else {
+                        reject({ categoryName, message })
+                    }
+                }).catch(e => {
+                    reject({ categoryName, message: e.toString() })
+                })
+        })
     }
 
     render() {
