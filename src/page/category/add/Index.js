@@ -1,6 +1,6 @@
 import React from 'react'
 import './Index.less'
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, notification } from 'antd';
 import api from '../../../service';
 
 export default class Index extends React.Component {
@@ -24,6 +24,8 @@ export default class Index extends React.Component {
                         failureArray.push(reason)
                     }
                 })
+                this.showSuccessResult(successArray)
+                this.showFailureResult(failureArray)
             })
     }
 
@@ -74,5 +76,33 @@ export default class Index extends React.Component {
                 </Button>
             </Form.Item>
         </Form>
+    }
+
+    showSuccessResult = (successArray) => {
+        if (!successArray || successArray.length === 0) {
+            return
+        }
+        notification['success']({
+            placement: 'bottomRight',
+            message: '添加成功',
+            description: successArray.toString()
+        })
+    }
+
+    showFailureResult = (failureArray) => {
+        if (!failureArray || failureArray.length === 0) {
+            return
+        }
+        const shows = []
+        failureArray.forEach(val => {
+            const { categoryName, message } = val
+            shows.push(<div key={categoryName}>{categoryName}:{message}></div>)
+        })
+        notification['error']({
+            duration: null,
+            placement: 'bottomRight',
+            message: '添加失败',
+            description: shows
+        })
     }
 }
